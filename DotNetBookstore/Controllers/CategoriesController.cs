@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DotNetBookstore.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DotNetBookstore.Controllers
 {
@@ -6,7 +7,17 @@ namespace DotNetBookstore.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            // Use the Category model to generate 10 sample categories in memory for displaying in the view
+            var categories = new List<Category>();
+            for (int i = 1; i <= 10; i++)
+            {
+                categories.Add(new Category
+                {
+                    CategoryId = i,
+                    Name = $"Category {i}" // = "Category " + i
+                });
+            }
+            return View(categories);
         }
         public IActionResult Browse(string category)
         {
