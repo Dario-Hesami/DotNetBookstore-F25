@@ -30,5 +30,10 @@ namespace DotNetBookstore.Controllers
             //ViewData["Category"] = category;
             return View();
         }
+
+        public IActionResult Create() 
+        {
+            return View();
+        }
     }
 }
