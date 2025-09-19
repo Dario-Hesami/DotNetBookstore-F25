@@ -10,6 +10,11 @@ namespace DotNetBookstore.Controllers
         }
         public IActionResult Browse(string category)
         {
+            // if category empty,redirect to index so user can first select a category
+            if (string.IsNullOrEmpty(category))
+            {
+                return RedirectToAction("Index");
+            }
             ViewBag.Category = category;
             //ViewData["Category"] = category;
             return View();
