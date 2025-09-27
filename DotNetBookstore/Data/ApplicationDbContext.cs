@@ -10,6 +10,48 @@ namespace DotNetBookstore.Data
             : base(options)
         {
         }
-        public DbSet<DotNetBookstore.Models.Category> Category { get; set; } = default!;
+        // DbSets for for all entities - these represent the tables in the database
+
+        public DbSet<Category> Categories
+
+        {
+
+            get; set;
+
+        } = default!;
+
+        public DbSet<Book> Books
+
+        {
+
+            get; set;
+
+        } = default!;
+
+        public DbSet<CartItem> CartItems
+
+        {
+
+            get; set;
+
+        } = default!;
+
+        public DbSet<Order> Orders
+
+        {
+
+            get; set;
+
+        } = default!;
+
+        public DbSet<OrderDetail> OrderDetails
+
+        {
+
+            get; set;
+
+        } = default!;
+
+
     }
 }
