@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace DotNetBookstore.Models
 {
@@ -43,7 +44,7 @@ namespace DotNetBookstore.Models
         }
 
         // Navigation property: each cart item points to one book (mandatory from the cart side)
-
+        [ValidateNever]
         public Book Book { get; set; } = null!;
 
     }

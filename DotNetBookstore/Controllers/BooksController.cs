@@ -22,7 +22,7 @@ namespace DotNetBookstore.Controllers
         // GET: Books
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Books.Include(b => b.Category);
+            var applicationDbContext = _context.Books.Include(b => b.Category).OrderBy(b => b.Author).ThenBy(b => b.Title);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -48,7 +48,7 @@ namespace DotNetBookstore.Controllers
         // GET: Books/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name");
+            ViewData["CategoryId"] = new SelectList(_context.Categories.OrderBy(c => c.Name), "CategoryId", "Name");
             return View();
         }
 
@@ -82,7 +82,7 @@ namespace DotNetBookstore.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name", book.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories.OrderBy(c => c.Name), "CategoryId", "Name", book.CategoryId);
             return View(book);
         }
 
@@ -103,6 +103,7 @@ namespace DotNetBookstore.Controllers
                 try
                 {
                     _context.Update(book);
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
