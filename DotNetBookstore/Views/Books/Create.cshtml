@@ -10,7 +10,8 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        @* The enctype is set to "multipart/form-data" to allow file uploads via the form *@
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Author" class="control-label"></label>
@@ -24,7 +25,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
+                @* File input for image uploads only (accepts image file types) *@
+                <input asp-for="Image" class="form-control" type="file" accept="image/*" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
             <div class="form-group">

@@ -4,12 +4,19 @@
     ViewData["Title"] = "Books";
 }
 
+@* use datatables.css for the table *@
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/datatables.css" />
+}
+
 <h1>Books</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+@* add id="book-table" to the table *@
+<table class="table" id="book-table">
     <thead>
         <tr>
             <th>
@@ -19,7 +26,7 @@
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Image)
+                @* @Html.DisplayNameFor(model => model.Image) *@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Price)
@@ -43,7 +50,11 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Image)
+                    @* Display the book cover image, or a placeholder if not available *@
+                    <img src="@(Url.Content(string.IsNullOrEmpty(item.Image)
+                                 ? "~/images/books/bookcover-placeholder.jpg"
+                                 : $"~/images/books/{item.Image}"))"
+                     alt="Book Cover" style="max-height: 100px;" />
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
@@ -63,3 +74,31 @@
 }
     </tbody>
 </table>
+
+@* Section for page-specific JavaScript *@
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#book-table').DataTable({
+                "columnDefs": [
+                    {
+                        "type": "num-fmt",  // Use num-fmt to correctly sort decimals
+                        "targets": [3]      // Price column (index 3) will be treated as numeric
+                    },
+                    {
+                        "orderable": false,  // Disable sorting for the Image column (index 2)
+                        "targets": [2]       // Image column is the third column (index 2)
+                    },
+                    {
+                        "orderable": false,  // Disable sorting for the MatureContent column (index 4)
+                        "targets": [4]       // MatureContent column is the fifth column (index 4)
+                    },
+                    {
+                        "orderable": false,
+                        "targets": [6]
+                    }
+                ]
+            });
+        });
+    </script>
+}
