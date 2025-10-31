@@ -11,7 +11,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace DotNetBookstore.Controllers
 {
-    [Authorize]
+    // accessible to Administrator role only. Role names case-sensitive and must match records in DB
+    [Authorize(Roles = "Administrator")]
+    // [Authorize(Roles = "Administrator,Manager")]
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
