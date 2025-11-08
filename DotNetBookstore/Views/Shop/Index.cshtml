@@ -1,0 +1,22 @@
+﻿﻿
+@model IEnumerable<DotNetBookstore.Models.Category>
+
+@{
+    ViewData["Title"] = "Shop Our Store";
+}
+
+<h1 class="text-center bg-light text-dark py-3 rounded shadow-sm mb-4">Shop Our Store</h1>
+<section class="row g-4 card-group justify-content-center">
+    @foreach (var c in Model)
+    {
+        <div class="col-sm-6 col-lg-4 mb-3 d-flex align-items-stretch">
+            <div class="card text-center shadow-sm border-0 category-card h-100 flex-fill d-flex" style="transition: transform 0.2s;">
+                <div class="card-body d-flex flex-column justify-content-center flex-fill">
+                    <a asp-controller="Shop" asp-action="ShopByCategory" asp-route-id="@c.CategoryId" class="stretched-link text-decoration-none fw-bold fs-4 text-primary" title="Browse books in this category">
+                        @c.Name
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</section>
