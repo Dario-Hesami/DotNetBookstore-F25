@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - DotNet Bookstore</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <!-- Bootstrap Icons CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/DotNetBookstore.styles.css" asp-append-version="true" />
     @RenderSection("Styles", required: false) <!-- This will render additional styles if defined in a view-->
@@ -26,6 +28,24 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Shop" asp-action="Index">Shop</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Shop" asp-action="Cart">
+                                Cart
+                                @if (Context.Session.GetInt32("ItemCount") > 0)
+                                {
+                                    <span class="badge badge-primary" id="cart-badge">@Context.Session.GetInt32("ItemCount")</span>
+                                }
+                            </a>
+                        </li>
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a>
+                            </li>
+                        }
+
                         @* @if (User.Identity.IsAuthenticated) *@
                         @if (User.IsInRole("Administrator"))
                         {

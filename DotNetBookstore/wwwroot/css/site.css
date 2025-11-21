@@ -20,3 +20,31 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* Cards: subtle lift + shadow on hover */
+.card-raise {
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.card-raise:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+}
+
+/* Image zoom on hover (when card raised) */
+.image-zoom img {
+  transition: transform .35s ease;
+}
+.card-raise:hover .image-zoom img {
+  transform: scale(1.06);
+}
+
+/* Book cover responsive sizing wrapper - slightly smaller */
+.book-cover-wrap { width: 85%; }
+@media (min-width: 576px) { .book-cover-wrap { width: 75%; } }
+@media (min-width: 768px) { .book-cover-wrap { width: 70%; } }
+@media (min-width: 992px) { .book-cover-wrap { width: 60%; } }
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .card-raise, .image-zoom img { transition: none; }
+}

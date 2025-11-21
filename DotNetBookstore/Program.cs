@@ -13,6 +13,16 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+// enable session state in the application 
+// This is used to store user session data, such as shopping cart items
+builder.Services.AddMemoryCache();
+builder.Services.AddSession(options =>
+{
+    // Set a short timeout for easy testing.
+    options.IdleTimeout = TimeSpan.FromMinutes(5);
+});
+
 builder.Services.AddControllersWithViews();
 
 // enable Google Auth before our app starts
@@ -45,6 +55,10 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+// must be called before routes are mapped
+// This enables session state in the application
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

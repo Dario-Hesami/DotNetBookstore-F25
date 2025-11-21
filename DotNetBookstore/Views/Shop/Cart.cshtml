@@ -1,0 +1,102 @@
+﻿@model IEnumerable<DotNetBookstore.Models.CartItem>
+
+@{
+    ViewData["Title"] = "Cart";
+}
+
+<div class="container py-5">
+    <div class="bg-primary bg-gradient text-white rounded-4 shadow-sm p-4 mb-4 text-center">
+        <h1 class="display-6 m-0"><i class="bi bi-cart4 me-2"></i>Your Cart</h1>
+        <p class="lead opacity-75 mb-0">Review your selected books before checkout</p>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="card border-0 shadow-sm mx-auto text-center p-5" style="max-width:560px;">
+            <div class="mb-3">
+                <i class="bi bi-emoji-frown text-warning" style="font-size:4rem;"></i>
+            </div>
+            <h4 class="fw-semibold mb-3">Your cart is empty</h4>
+            <p class="text-muted mb-4">Browse our collection and add books you love.</p>
+            <a asp-action="Index" class="btn btn-lg btn-success px-4"><i class="bi bi-bag-plus me-1"></i> Start Shopping</a>
+        </div>
+    }
+    else
+    {
+        decimal total = 0;
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+            <div class="card-header bg-white border-0 pt-4">
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h2 class="h5 mb-0"><i class="bi bi-list-check text-primary me-2"></i>Items in Cart</h2>
+                    <a asp-action="Index" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left me-1"></i> Continue Shopping</a>
+                </div>
+            </div>
+            <div class="card-body pt-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr class="text-uppercase small text-muted">
+                                <th style="min-width:180px;">Title</th>
+                                <th class="text-center" style="width:110px;">Cover</th>
+                                <th class="text-end" style="width:120px;">Price</th>
+                                <th class="text-center" style="width:110px;">Qty</th>
+                                <th class="text-end" style="width:120px;">Subtotal</th>
+                                <th style="width:90px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                var lineTotal = item.Price * item.Quantity;
+                                total += lineTotal;
+                                <tr>
+                                    <td>
+                                        <a asp-controller="Books" asp-action="Details" asp-route-id="@item.BookId" class="fw-semibold text-decoration-none text-dark">
+                                            @Html.DisplayFor(m => item.Book.Title)
+                                        </a>
+                                        <div class="small text-muted">@item.Book.Author</div>
+                                    </td>
+                                    <td class="text-center">
+                                        @if (item.Book.Image != null)
+                                        {
+                                            <img src="~/images/books/@item.Book.Image" alt="Book Cover" class="img-fluid rounded" style="max-width:70px; max-height:95px; object-fit:cover;" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/images/books/bookcover-placeholder.jpg" alt="Book Cover" class="img-fluid rounded" style="max-width:70px; max-height:95px; object-fit:cover;" />
+                                        }
+                                    </td>
+                                    <td class="text-end text-success fw-semibold">@String.Format("{0:C}", item.Price)</td>
+                                    <td class="text-center">@Html.DisplayFor(m => item.Quantity)</td>
+                                    <td class="text-end fw-semibold">@String.Format("{0:C}", lineTotal)</td>
+                                    <td class="text-end">
+                                        <a asp-action="RemoveFromCart" asp-route-id="@item.CartItemId" class="btn btn-outline-danger btn-sm" title="Remove from cart" onclick="return confirmDelete();">
+                                            <i class="bi bi-cart-x"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr class="table-info">
+                                <td colspan="4" class="text-end fw-semibold">Total</td>
+                                <td class="text-end fw-bold h6">@String.Format("{0:C}", total)</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mt-4">
+                    <div class="order-2 order-md-1">
+                        <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i> Continue Shopping</a>
+                    </div>
+                    <div class="order-1 order-md-2 text-md-end">
+                        <a class="btn btn-primary btn-lg px-4" asp-action="Checkout">
+                            <i class="bi bi-credit-card me-1"></i> Checkout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,82 @@
+﻿@* This view displays books filtered by category. *@
+
+@model IEnumerable<DotNetBookstore.Models.Book>
+
+@{
+    ViewData["Title"] = "Shop ByCategory";
+}
+
+@* Category header using Bootstrap utilities only *@
+<div class="bg-primary bg-gradient text-white rounded p-4 mb-4 text-center shadow-sm">
+    <div class="d-flex align-items-center justify-content-center gap-2">
+        <span aria-hidden="true" class="fs-3">📚</span>
+        <h1 class="h3 m-0">You are shopping for: <span class="fw-semibold">@ViewBag.Category</span></h1>
+    </div>
+</div>
+
+@* Empty state *@
+@if (!Model.Any())
+{
+    <div class="text-center p-5 my-5 bg-light border rounded">
+        <div class="fs-1" aria-hidden="true">🙁</div>
+        <h2 class="h5 mt-3 mb-2">No books found in this category</h2>
+        <p class="text-muted mb-4">Try browsing our full catalog.</p>
+        <a asp-controller="Shop" asp-action="Index" class="btn btn-primary">Back to Shop</a>
+    </div>
+}
+
+<section class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4 mb-5">
+    @foreach (var item in Model)
+    {
+        <div class="col d-flex">
+            <div class="card text-center h-100 shadow-sm w-100 border-0 card-raise">
+                @* Responsive natural-ratio cover with hover zoom *@
+                <div class="book-cover-wrap mx-auto mt-3 image-zoom">
+                    @if (item.Image != null)
+                    {
+                        <img src="~/images/books/@item.Image" alt="@item.Title cover" class="img-fluid rounded shadow-sm" loading="lazy" decoding="async" />
+                    }
+                    else
+                    {
+                        <img src="~/images/books/bookcover-placeholder.jpg" alt="Book cover placeholder" class="img-fluid rounded shadow-sm" loading="lazy" decoding="async" />
+                    }
+                </div>
+
+                <div class="card-body d-flex flex-column">
+                    <h3 class="h6 mb-1">
+                        <a asp-controller="Books" asp-action="Details" asp-route-id="@item.BookId" class="link-dark link-underline-opacity-0 link-underline-opacity-75-hover" title="View book details">
+                            @item.Title
+                        </a>
+                    </h3>
+                    <div class="text-muted small mb-2">by @item.Author</div>
+
+                    @* Enhanced price styling *@
+                    <div class="mb-3">
+                        <div class="badge bg-success rounded-pill d-inline-flex align-items-center gap-2 px-3 py-2 shadow-sm" aria-label="Book price">
+                            <span class="fw-semibold">Price</span>
+                            <span class="fs-6">@item.Price.ToString("C")</span>
+                        </div>
+                    </div>
+
+                    <form method="post" asp-controller="Shop" asp-action="AddToCart" class="mt-auto">
+                        <input type="hidden" name="BookId" value="@item.BookId" />
+                        <div class="input-group input-group-sm justify-content-center">
+                            <label for="Quantity-@item.BookId" class="visually-hidden">Quantity</label>
+                            <span class="input-group-text">Qty</span>
+                            <input type="number" id="Quantity-@item.BookId" name="Quantity" required min="1" max="9999" value="1" class="form-control text-center w-auto flex-grow-0" />
+                            <button class="btn btn-primary" type="submit" aria-label="Add to cart">
+                                <svg viewBox="0 0 24 24" width="16" height="16" class="me-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <circle cx="9" cy="20" r="1.5" />
+                                    <circle cx="18" cy="20" r="1.5" />
+                                    <path d="M3 4h2l3 10h10l3-8H6" />
+                                    <path d="M10 12h6" />
+                                </svg>
+                                Add
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</section>

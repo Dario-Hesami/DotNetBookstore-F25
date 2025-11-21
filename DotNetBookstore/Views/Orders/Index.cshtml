@@ -1,0 +1,68 @@
+﻿@model IEnumerable<DotNetBookstore.Models.Order>
+
+@{
+    ViewData["Title"] = "Order History";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-11">
+            <div class="card shadow border-0">
+                <div class="card-header bg-gradient bg-primary text-white">
+                    <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3">
+                        <h2 class="h4 mb-0"><i class="bi bi-clock-history"></i> Order History</h2>
+                        <div class="d-flex align-items-center gap-2">
+                            <input type="text" class="form-control form-control-sm" placeholder="Search orders..." aria-label="Search orders" />
+                            <button type="button" class="btn btn-light btn-sm" disabled title="Feature pending"><i class="bi bi-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Order #</th>
+                                    <th>Date</th>
+                                    <th>Total</th>
+                                    <th>Customer</th>
+                                    <th>Location</th>
+                                    <th>Customer Id</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.OrderByDescending(o => o.OrderDate))
+                                {
+                                    <tr>
+                                        <td><span class="badge bg-secondary">@item.OrderId</span></td>
+                                        <td class="text-nowrap">@Html.DisplayFor(modelItem => item.OrderDate)</td>
+                                        <td class="fw-semibold text-success">@Html.DisplayFor(modelItem => item.OrderTotal)</td>
+                                        <td>@item.FirstName @item.LastName</td>
+                                        <td class="small">@item.City, @item.Province</td>
+                                        <td class="text-muted small">@Html.DisplayFor(modelItem => item.CustomerId)</td>
+                                        <td class="text-end">
+                                            <a asp-action="Details" asp-route-id="@item.OrderId" class="btn btn-outline-primary btn-sm">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="7" class="small text-secondary">
+                                        Showing @Model.Count() orders. Latest on top.
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer bg-white d-flex justify-content-end">
+                    <a asp-controller="Shop" asp-action="Index" class="btn btn-outline-secondary btn-sm"><i class="bi bi-shop"></i> Continue Shopping</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
